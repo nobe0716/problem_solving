@@ -1,0 +1,35 @@
+# Definition for singly-linked list.
+class ListNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution(object):
+    def getNthFromEnd(self, head, n):
+        if head.next is None:
+            return [head, 1]
+        else:
+            node, idx = self.getNthFromEnd(head.next, n)
+            if idx == n:
+                return node, idx
+            else:
+                return head, idx + 1
+
+    def removeNthFromEnd(self, head, n):
+        node, idx = self.getNthFromEnd(head, n)
+        return node
+        # print(node.val, idx)
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(3)
+head.next.next.next = ListNode(4)
+head.next.next.next.next = ListNode(5)
+
+s = Solution()
+print(s.removeNthFromEnd(head, 2))

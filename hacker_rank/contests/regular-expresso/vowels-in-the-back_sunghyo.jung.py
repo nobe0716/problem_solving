@@ -1,0 +1,1 @@
+Regex_Pattern = r"^[a-z]*[aeiouy][a-z]{9}$"	# Do not delete 'r'.

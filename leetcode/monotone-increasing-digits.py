@@ -25,6 +25,6 @@ print (s.monotoneIncreasingDigits(100))
 print (s.monotoneIncreasingDigits(332))
 print (s.monotoneIncreasingDigits(120))
 # print (s.monotoneIncreasingDigits(807))
-print (s.monotoneIncreasingDigits(88888888007))
+print (s.monotoneIncreasingDigits(111))
 
 

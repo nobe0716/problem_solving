@@ -14,3 +14,6 @@ class Solution(object):
 					pos = i
 				target_count += 1
 		return pos
+
+
+	""

@@ -1,3 +1,7 @@
+# exclude useless input, output file
+*.in
+*.out
+
 ### JetBrains template
 # individual
 individual/

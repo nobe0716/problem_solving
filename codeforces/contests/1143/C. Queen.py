@@ -34,12 +34,8 @@ is_candidates = [True] * (n + 1)
 for i in range(1, n + 1):
     parent, respect = map(int, input().split())
     v.append([parent, respect])
-    if respect == 0:
+    if respect == 0 and parent >= 0:
         is_candidates[parent] = False
-    # g[parent].add(i)
-    # if parent == -1:
-    #     root = i
-
 bad_sons = []
 
 for i in range(1, n + 1):

@@ -44,10 +44,20 @@ Q = 10^5 for large
 Just calculate num of passing people for all grid (0, 0), (0, 1) (0, 2)...(Q, Q-1),(Q, Q)
 
 ### Large
+Divide grid to X-axis and Y-axis
+Then calculate 1-D interval [i, j] which has maximum number of possible intersection
 
-...
+- X-axis
+  - filter people whose direction is East or West
+  - order people by X-position
+  - for pos i, find max(number of E-people whose x is less than i) + (number of W-people whose x is larger than i)
+- Y-axis
+  - filter people hose direction is North or South
+  - order people by Y-position
+  - for pos j, find max(number of N-people whose y is less than i) + (number of S-people whose y is larger than j)
+
 """
-from collections import namedtuple
+from collections import namedtuple, Counter, defaultdict
 
 _DEBUG = True
 num_of_test = int(input())
@@ -57,35 +67,60 @@ Point = namedtuple('Point', 'x y')
 
 class People:
     def __init__(self, _point, _direction):
-        self.p = _point
-        self.d = _direction
+        self.pos = _point
+        self.dir = _direction
 
     def will_pass(self, point):
-        if self.d == 'N':
-            return point.y > self.p.y
-        elif self.d == 'E':
-            return point.x > self.p.x
-        elif self.d == 'S':
-            return point.y < self.p.y
+        if self.dir == 'N':
+            return point.y > self.pos.y
+        elif self.dir == 'E':
+            return point.x > self.pos.x
+        elif self.dir == 'S':
+            return point.y < self.pos.y
         else:  # 'W'
-            return point.x < self.p.x
+            return point.x < self.pos.x
 
 
 def solve(p, q, peoples):
-    maximum_val = 0
-    maximum_pos = Point(0, 0)
+    tot_dir_cnt = Counter()
+    cur_dir_cnt = Counter()
 
-    for i in range(0, q + 1):
-        for j in range(0, q + 1):
-            point = Point(i, j)
-            c = 0
-            for people in peoples:
-                if people.will_pass(point):
-                    c += 1
-            if c > maximum_val:
-                maximum_val = c
-                maximum_pos = point
-    return maximum_pos
+    ew_cnt = defaultdict(lambda: defaultdict(int))  # pos -> {dir -> count}
+    ns_cnt = defaultdict(lambda: defaultdict(int))  # pos -> {dir -> count}
+    for p in peoples:
+        tot_dir_cnt[p.dir] += 1
+        if p.dir == 'N':
+            ns_cnt[p.pos.y + 1][p.dir] += 1
+        elif p.dir == 'S':
+            ns_cnt[p.pos.y][p.dir] += 1
+        elif p.dir == 'E':
+            ew_cnt[p.pos.x + 1][p.dir] += 1
+        else:
+            ew_cnt[p.pos.x][p.dir] += 1
+
+    x_pos_max = 0
+    x_pos_val = tot_dir_cnt['W']
+
+    for x in sorted(ew_cnt.keys()):
+        cur_dir_cnt['E'] += ew_cnt[x]['E']
+        cur_dir_cnt['W'] += ew_cnt[x]['W']
+
+        if cur_dir_cnt['E'] + (tot_dir_cnt['W'] - cur_dir_cnt['W']) > x_pos_val:
+            x_pos_max = x
+            x_pos_val = cur_dir_cnt['E'] + (tot_dir_cnt['W'] - cur_dir_cnt['W'])
+
+    y_pos_max = 0
+    y_pos_val = tot_dir_cnt['S']
+
+    for y in sorted(ns_cnt.keys()):
+        cur_dir_cnt['N'] += ns_cnt[y]['N']
+        cur_dir_cnt['S'] += ns_cnt[y]['S']
+
+        if cur_dir_cnt['N'] + (tot_dir_cnt['S'] - cur_dir_cnt['S']) > y_pos_val:
+            y_pos_max = y
+            y_pos_val = cur_dir_cnt['N'] + (tot_dir_cnt['S'] - cur_dir_cnt['S'])
+
+    return Point(x_pos_max, y_pos_max)
 
 
 for test_num in range(1, num_of_test + 1):

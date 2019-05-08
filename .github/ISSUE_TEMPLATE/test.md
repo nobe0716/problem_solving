@@ -1,7 +1,7 @@
 ---
 name: Test Name
 about: For test about
-labels: question
+labels: question, bug, help+wanted
 assignees: nobe0716
 ---
 

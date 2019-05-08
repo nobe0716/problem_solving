@@ -1,7 +1,7 @@
 ---
-name: Test
+name: Test Name
 about: For test about
-label: question
+label: enhancement
 assignees: nobe0716
 ---
 

@@ -1,8 +1,8 @@
 ---
 name: Test
 about: For test about
-label: good+first+issue
-
+label: question
+assignees: nobe0716
 ---
 
 Hello Its Test Template

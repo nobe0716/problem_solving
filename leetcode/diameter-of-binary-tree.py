@@ -1,18 +1,18 @@
-class Solution(object):
-    def diameterOfBinaryTree(self, root):
-        def lp(root):  # # of node, diameter
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        def traverse(root: TreeNode) -> (int, int):
             if root is None:
                 return (0, 0)
-            elif root.left is None and root.right is None:
-                return (1, 0)
-            l = lp(root.left)
-            r = lp(root.right)
+            l, r = traverse(root.left), traverse(root.right)
+            # print(root.val, max(l[0], r[0], l[1] + r[1]), max(l[1], r[1]) + 1)
+            return max(l[0], r[0], l[1] + r[1]), max(l[1], r[1]) + 1
 
-            n = max(l[0], r[0]) + 1
-            v = [l[0] + r[0], l[1], r[1]]
-            return (n, max(v))
-
-        if root is None:
-            return 0
-        r = lp(root)
-        return max(r[0] - 1, r[1])
+        return traverse(root)[0]

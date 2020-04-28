@@ -22,12 +22,12 @@ class LRUCache:
             return
         elif node is self.head:
             self.head = self.head.next
-            self.head.previous = None
+            self.head.prev = None
             node.previous, node.next = self.tail, None
             self.tail.next = node
             self.tail = node
         elif node is not self.tail:
-            node.previous.next, node.next.previous = node.next, node.previous
+            node.previous.next, node.next.prev = node.next, node.previous
             node.previous, node.next = self.tail, None
             self.tail.next = node
             self.tail = node
@@ -54,7 +54,7 @@ class LRUCache:
             if len(self.cache) > self.capacity:
                 del self.cache[self.head.key]
                 self.head = self.head.next
-                self.head.previous = None
+                self.head.prev = None
 
 
 # Your LRUCache object will be instantiated and called as such:

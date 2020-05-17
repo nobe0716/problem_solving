@@ -1,3 +1,6 @@
+"""
+Tough bfs
+"""
 import sys
 
 sys.setrecursionlimit(327500)

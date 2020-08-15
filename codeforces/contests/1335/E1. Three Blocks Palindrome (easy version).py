@@ -1,8 +1,10 @@
 import bisect
+import sys
 from collections import defaultdict
 from itertools import permutations
 from typing import List
 
+input = sys.stdin.readline
 
 def solve(n: int, s: List[int]):
     pos = defaultdict(list)

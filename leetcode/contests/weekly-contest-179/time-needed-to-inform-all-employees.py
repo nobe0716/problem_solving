@@ -1,38 +1,19 @@
-import heapq
 from collections import defaultdict
 from typing import List
 
 
 class Solution:
     def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
-        g = defaultdict(dict)
-        h = []
+        g = defaultdict(list)  # represent manager -> employee
         for i, m in enumerate(manager):
-            g[m][i] = informTime[m]
+            g[m].append(i)
 
-        visited = set([headID])
-        costs = [float('inf')] * n
-        costs[headID] = 0
+        def rec(head):
+            if head not in g:
+                return 0
+            return informTime[head] + max(rec(e) for e in g[head])
 
-        id = headID
-        for k, v in g[id].items():
-            heapq.heappush(h, (v, k))
-            costs[k] = v
-
-        visited.add(id)
-
-        while h:
-            cost, id = heapq.heappop(h)
-            if id in visited:
-                continue
-            visited.add(id)
-
-            for k, v in g[id].items():
-                if cost + v < costs[k]:
-                    costs[k] = cost + v
-                    heapq.heappush(h, (cost + v, k))
-
-        return max(costs)
+        return rec(headID)
 
 
 s = Solution()

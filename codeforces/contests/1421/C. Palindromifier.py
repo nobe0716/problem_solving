@@ -1,6 +1,6 @@
 s = input()
 n = len(s)
 print(3)
-print('R {}'.format(n - 1))
-print('L {}'.format(n))
 print('L {}'.format(n - 1))
+print('R {}'.format(n - 1))
+print('R {}'.format(2 * n - 1))

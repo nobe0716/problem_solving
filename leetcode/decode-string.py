@@ -1,22 +1,25 @@
-class Solution(object):
-    def decodeString(self, s):
-        st = list()
-        rn = 0
-        d = ""
-        for c in s:
-            if "0" <= c <= "9":
-                rn = rn * 10 + int(c)
-            elif c == "[":
-                st.append([rn, len(d)])
-                rn = 0
-            elif c == "]":
-                r, rsi = st.pop()
-                rs = d[rsi:]
-                d += rs * (r - 1)
+from string import digits
+
+
+class Solution:
+    def decodeString(self, s: str) -> str:
+        v, t = 0, ''
+        num_stack, tok_stack = [], []
+        for e in s:
+            if e in digits:
+                v = v * 10 + int(e)
+            elif e == '[':
+                num_stack.append(v)
+                tok_stack.append(t)
+                v, t = 0, ''
+            elif e == ']':
+                t = tok_stack.pop() + t * num_stack.pop()
             else:
-                d += c
-        while len(st) > 0:
-            r, rsi = st.pop()
-            rs = d[rsi:]
-            d += rs * (r - 1)
-        return d
+                t += e
+        return t
+
+
+s = Solution()
+assert s.decodeString(s="3[a]2[bc]") == "aaabcbc"
+assert s.decodeString("2[abc]3[cd]ef") == "abcabccdcdcdef"
+assert s.decodeString("abc3[cd]xyz") == "abccdcdcdxyz"

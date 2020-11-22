@@ -1,21 +1,27 @@
 class Solution:
     def backspaceCompare(self, S: str, T: str) -> bool:
-        def reduce(i, j, i_skip=0, j_skip=0):
-            if i >= 0 and S[i] == '#':
-                return reduce(i - 1, j, i_skip + 1, j_skip)
-            if j >= 0 and T[j] == '#':
-                return reduce(i, j - 1, i_skip, j_skip + 1)
-            if i >= 0 and i_skip > 0:
-                return reduce(i - 1, j, i_skip - 1, j_skip)
-            if j >= 0 and j_skip > 0:
-                return reduce(i, j - 1, i_skip, j_skip - 1)
-            if i >= 0 and j >= 0 and S[i] == T[j]:
-                return reduce(i - 1, j - 1)
-            return i < 0 and j < 0
+        def get_new_pos(p: int, s: str) -> int:
+            sc = 0
+            while p >= 0 and (sc > 0 or s[p] == '#'):
+                if s[p] == '#':
+                    sc += 1
+                else:
+                    sc -= 1
+                p -= 1
+            return p
 
-        return reduce(len(S) - 1, len(T) - 1)
+        index_s, index_t = len(S) - 1, len(T) - 1
 
-s = Solution()
-assert (s.backspaceCompare("xywrrmp", "xywrrmu#p"))
-# assert (s.backspaceCompare("a##c", "#a#c"))
-# assert (s.backspaceCompare("ab##", "c#d#"))
+        while index_s >= 0 and index_t >= 0:
+            index_s = get_new_pos(index_s, S)
+            index_t = get_new_pos(index_t, T)
+            if index_s < 0 and index_t < 0:
+                return True
+            elif index_s < 0 or index_t < 0 or S[index_s] != T[index_t]:
+                return False
+            index_s -= 1
+            index_t -= 1
+
+        index_s = get_new_pos(index_s, S)
+        index_t = get_new_pos(index_t, T)
+        return index_s < 0 and index_t < 0

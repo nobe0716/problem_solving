@@ -1,41 +1,27 @@
+import functools
+import sys
+
+sys.setrecursionlimit(500 * 500)
+
+
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
-        word1 = ' ' + word1
-        word2 = ' ' + word2
-        n, m = len(word1), len(word2)
+        @functools.lru_cache(None)
+        def dp(n: int, m: int):
+            if n == 0:
+                return m
+            elif m == 0:
+                return n
+            elif word1[n - 1] == word2[m - 1]:
+                return dp(n - 1, m - 1)
 
-        """
-        T(i, j) : min # of ops if match word1[i] to word2[j]
-        T(i, j) = T(k, l) + (i - k - 1; deleted chr) + (j - l - 1 ; inserted chr)
-        """
-        t = [[float('inf') for _ in range(m)] for _ in range(n)]
-        r = [[float('inf') for _ in range(m)] for _ in range(n)]
+            return 1 + min(
+                dp(n, m - 1),  # add
+                dp(n - 1, m),  # delete
+                dp(n - 1, m - 1)  # replace
+            )
 
-        t[0][0] = 0
-        # cache min among t[:k][:l] - k - 1 - l - 1
-        r[0][0] = -2
-
-        for i in range(1, n):
-            t[i][0] = i  # cus i number of chr should be deleted
-            r[i][0] = -2
-
-        for i in range(1, m):
-            t[0][i] = i  # cus i number of chr should be inserted
-            r[0][i] = -2
-
-        for i in range(1, n):
-            for j in range(1, m):
-                t[i][j] = r[i - 1][j - 1] + i + j
-                if word1[i] != word2[j]:
-                    t[i][j] += 1
-
-                r[i][j] = min(t[i][j] - i - 1 - j - 1, r[i - 1][j], r[i][j - 1])
-
-        res = float('inf')
-        for i in range(n):
-            for j in range(m):
-                res = min(res, t[i][j] + (n - i - 1) + (m - j - 1))
-        return res
+        return dp(len(word1), len(word2))
 
 
 s = Solution()

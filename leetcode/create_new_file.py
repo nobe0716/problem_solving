@@ -12,6 +12,9 @@ while True:
         break
     contents.append(line)
 
+    if len(contents) >= 2 and len(contents[-1]) == 0:
+        break
+
 f = open(name_of_prob + '.py', 'w')
 f.write('\n'.join(contents))
 f.close()

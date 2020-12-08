@@ -12,7 +12,7 @@ while True:
         break
     contents.append(line)
 
-    if len(contents) >= 2 and len(contents[-1]) == 0:
+    if len(contents) >= 2 and len(contents[-1].strip()) == 0:
         break
 
 f = open(name_of_prob + '.py', 'w')

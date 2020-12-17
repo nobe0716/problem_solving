@@ -18,4 +18,5 @@ while True:
 f = open(name_of_prob + '.py', 'w')
 f.write('\n'.join(contents))
 f.close()
-print('# write finished')
+print('# write finished go to file:\n{}'.format(name_of_prob))
+print('')

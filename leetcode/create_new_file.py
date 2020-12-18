@@ -16,6 +16,9 @@ while True:
         break
 
 f = open(name_of_prob + '.py', 'w')
+if any('List' in _ for _ in contents):
+    print('# append typing import')
+    contents = ["from typing import List\n\n"] + contents
 f.write('\n'.join(contents))
 f.close()
 print('# write finished go to file:\n{}'.format(name_of_prob))

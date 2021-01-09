@@ -1,32 +1,28 @@
+from typing import List
+
+
 class Solution:
-    def rec(self, matrix, n, m, x, y, c):
-        if x + c >= n or y + c >= m:
-            return c
-
-        for i in range(c):
-            if matrix[x + i][y + c] is '0':
-                return c
-            if matrix[x + c][y + i] is '0':
-                return c
-        if matrix[x + c][y + c] is '0':
-            return c
-        return self.rec(matrix, n, m, x, y, c + 1)
-
-
-
-    def maximalSquare(self, matrix):
-        if len(matrix) is 0:
-            return 0
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
         n, m = len(matrix), len(matrix[0])
-
-        r = 0
-        for i in range(n):
+        col = [[0] * m for _ in range(n)]
+        for i in range(m):
+            col[0][i] = 1 if matrix[0][i] == "1" else 0
+        for i in range(1, n):
             for j in range(m):
-                if matrix[i][j] is "1":
-                    r = max(r, self.rec(matrix, n, m, i, j, 1))
+                col[i][j] = col[i - 1][j] + 1 if matrix[i][j] == "1" else 0
 
-        return r * r
+        res = 0
+        for i in range(n):
+            for j in range(res, m):
+                for k in range(res + 1, min(i, j) + 2):  # k - possible answer candidate
+                    if all(matrix[i][_] == "1" and col[i][_] >= k for _ in range(j - k + 1, j + 1)):
+                        res = k
+                        break
+        return res ** 2
+
 
 s = Solution()
-print(s.maximalSquare([["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]))
-
+assert s.maximalSquare(matrix=[["1", "0", "1", "0", "0"], ["1", "0", "1", "1", "1"], ["1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]]) == 4
+assert s.maximalSquare(matrix=[["1", "1", "1", "0", "0"], ["1", "1", "1", "1", "1"], ["1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]]) == 9
+assert s.maximalSquare(matrix=[["0", "1"], ["1", "0"]]) == 1
+assert s.maximalSquare(matrix=[["0"]]) == 0

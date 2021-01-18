@@ -1,8 +1,12 @@
+from functools import lru_cache
+
+
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
         ls = len(s)
         lp = len(p)
 
+        @lru_cache(None)
         def back(i, j):
             if i == ls and j == lp:
                 return True

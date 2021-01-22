@@ -1,34 +1,24 @@
-class Solution(object):
-    def numSquares(self, n):
-        if n == 0:
-            return 0
-        t = [i for i in range(n + 1)]
-        s = []
-        i = 1
-        while i * i <= n:
-            t[i * i] = 1
-            s.append(i * i)
-            i += 1
-        # s consist of square values between [1, n]
+import sys
+from functools import lru_cache
 
-        q = list(s)
-        while len(q) > 0:
-            nq = []
+sys.setrecursionlimit(10001)
 
-            for i in q:
-                for j in s:
-                    if i + j > n:
-                        continue
-                    if t[i + j] > t[i] + t[j]:
-                        t[i + j] = t[i] + t[j]
-                        nq.append(i + j)
-            q = nq
-        return t[n]
+BASE = {i ** 2 for i in range(1, 100)}
 
 
-s = Solution()
-print(s.numSquares(2))
-print(s.numSquares(12))
-print(s.numSquares(13))
-print(s.numSquares(10000))
-print(s.numSquares(100000))
+class Solution:
+    @lru_cache(None)
+    def numSquares(self, n: int) -> int:
+        if n in BASE:
+            return 1
+        v = 1
+        while v ** 2 <= n:
+            v += 1
+        v -= 1
+        r = n
+        for i in range(v, 0, -1):
+            r = min(r, self.numSquares(n - i ** 2) + 1)
+            if r == 2:
+                return 2
+
+        return r

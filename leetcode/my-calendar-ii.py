@@ -1,59 +1,45 @@
-"""
-## Name of Prob
-
-## Link
-https://leetcode.com/problems/my-calendar-ii/
-
-## Note
-
-Reservation representation start, end means [start, end), half opened
-
-## Input
-
-## Output
-
-## Strategy
-
-Collapse can be avoided for new comer [start, end). For pre-exist [x, y) x >= end and y <= start
-
-if collapse occurs, save dup_booked interval
-
-for next book, check dup_booked intervals first, and return False if any dup_booked has collapsed with new comer.
-Then, check new comer with pre-exist books and add to dup_intervals if collapsed occurs
-
-"""
+from sortedcontainers import SortedDict
 
 
 class MyCalendarTwo:
 
     def __init__(self):
-        self._intervals = list()
-        self._dup_intervals = list()
+        self.books = SortedDict()
 
     def book(self, start: int, end: int) -> bool:
-        # print('int', self._intervals)
-        # print('dup', self._dup_intervals)
-        for x, y in self._dup_intervals:
-            if x >= end or y <= start:
-                continue
+        if start not in self.books:
+            self.books[start] = 0
+        if end not in self.books:
+            self.books[end] = 0
+
+        self.books[start] += 1
+        self.books[end] -= 1
+
+        dups = 0
+        for v in self.books.values():
+            dups += v
+            if dups >= 3:
+                break
+
+        if dups >= 3:
+            self.books[start] -= 1
+            self.books[end] += 1
+
+            if self.books[start] == 0:
+                del self.books[start]
+            if self.books[end] == 0:
+                del self.books[end]
             return False
-
-        for x, y in self._intervals:
-            if x >= end or y <= start:
-                continue
-            self._dup_intervals.append((max(start, x), min(end, y)))
-        self._intervals.append((start, end))
-
         return True
 
 
-# Your MyCalendarTwo object will be instantiated and called as such:
-obj = MyCalendarTwo()
-expected_res = [True, True, True, False, True, True]
-book_intervals = [[10, 20], [50, 60], [10, 40], [5, 15], [5, 10], [25, 55]]
-for idx, pos in enumerate(book_intervals):
-    start, end = pos
-    book_result = obj.book(start, end)
-    print(idx, start, end, book_result, expected_res[idx])
-    assert book_result == expected_res[idx]
-    # assert expected_res[idx] == book_result
+def validate(ops, args):
+    s = MyCalendarTwo()
+    r = [None]
+    for op, arg in zip(ops[1:], args[1:]):
+        r.append(s.book(*arg))
+    return r
+
+
+assert validate(["MyCalendarTwo", "book", "book", "book", "book", "book", "book"],
+                [[], [10, 20], [50, 60], [10, 40], [5, 15], [5, 10], [25, 55]]) == [None, True, True, True, False, True, True]

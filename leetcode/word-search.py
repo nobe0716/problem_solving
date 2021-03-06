@@ -1,22 +1,41 @@
-class Solution(object):
-    def exist(self, board, word):
-        n, m = len(board), len(board[0])
+from typing import List
 
-        def search(b, v, n, m, cur, w):
-            if len(w) == 0:
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        if not board:
+            return False
+        n, m = len(board), len(board[0])
+        dx, dy = [-1, 0, 1, 0], [0, 1, 0, -1]
+
+        def back(x, y, idx, v):
+            if idx == len(word):
                 return True
-            v[cur[0]][cur[1]] = True
-            for x, y, in [(cur[0] - 1, cur[1]), (cur[0], cur[1] + 1), (cur[0] + 1, cur[1]), (cur[0], cur[1] - 1)]:
-                if x < 0 or x >= n or y < 0 or y >= m:
+
+            for k in range(4):
+                nx, ny = x + dx[k], y + dy[k]
+                if not (0 <= nx < n and 0 <= ny < m) or board[nx][ny] != word[idx] or (nx, ny) in v:
                     continue
-                if board[x][y] == w[0] and v[x][y] == False and search(b, v, n, m, (x, y), w[1:]):
+                v.add((nx, ny))
+                if back(nx, ny, idx + 1, v):
                     return True
-            v[cur[0]][cur[1]] = False
+                v.discard((nx, ny))
             return False
 
-        visited = [[False] * m for _ in range(n)]
         for i in range(n):
             for j in range(m):
-                if board[i][j] == word[0] and search(board, visited, n, m, (i, j), word[1:]):
+                if board[i][j] != word[0]:
+                    continue
+                if back(i, j, 1, {(i, j)}):
                     return True
         return False
+
+
+s = Solution()
+assert s.exist([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED")
+assert not s.exist(
+    [
+        ["A", "B", "C", "E"],
+        ["S", "F", "C", "S"],
+        ["A", "D", "E", "E"]],
+    "ABCB")

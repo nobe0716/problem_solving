@@ -12,20 +12,27 @@ class TreeNode:
 
 
 class Solution:
+    def __init__(self):
+        self.v = 0
+        self.node_dict
+
+    def label_node(self, node: TreeNode):
+        if not node:
+            return
+        node.val = self.v
+        node_dict[self.v] = node
+        # v += 1
+        label_node(node.left)
+        label_node(node.right)
+
     def minCameraCover(self, root: TreeNode) -> int:
         _BIG_NUM = 10 ** 9
         sys.setrecursionlimit(1001)
 
         def label_node(node: TreeNode):
-            if not node:
-                return
-            node.val = v[0]
-            node_dict[v[0]] = node
-            v[0] += 1
-            label_node(node.left)
-            label_node(node.right)
 
         v = [1]
+
         node_dict = {}
         label_node(root)
 

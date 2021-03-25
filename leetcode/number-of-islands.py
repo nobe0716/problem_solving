@@ -1,20 +1,22 @@
-class Solution(object):
-	def numIslands(self, grid):
-		def coloring(grid, n, m, i, j, c):
-			if 0 <= i < n and 0 <= j < m and grid[i][j] == '1':
-				grid[i][j] = c
-				coloring(grid, n, m, i - 1, j, c)
-				coloring(grid, n, m, i + 1, j, c)
-				coloring(grid, n, m, i, j - 1, c)
-				coloring(grid, n, m, i, j + 1, c)
+from typing import List
 
-		if len(grid) == 0:
-			return 0
-		c = 2
-		n, m = len(grid), len(grid[0])
-		for i in range(n):
-			for j in range(m):
-				if grid[i][j] == '1':
-					coloring(grid, n, m, i, j, c)
-					c += 1
-		return c - 2
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        def remove_island(x: int, y: int):
+            if not (0 <= x < n and 0 <= y < m) or grid[x][y] != '1':
+                return
+            grid[x][y] = 0
+            remove_island(x + 1, y)
+            remove_island(x - 1, y)
+            remove_island(x, y + 1)
+            remove_island(x, y - 1)
+
+        n, m = len(grid), len(grid[0])
+        c = 0
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] == '1':
+                    remove_island(i, j)
+                    c += 1
+        return c

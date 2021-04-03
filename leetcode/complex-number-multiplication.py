@@ -9,8 +9,8 @@ class ComplexNumber:
 		return ComplexNumber(d, i)
 
 	def pro(self, cn):
-		d = self.d * cn.d - self.i * cn.i
-		i = self.d * cn.i + self.i * cn.d
+		d = self.d * cn.d - self.i * cn.new_number
+		i = self.d * cn.new_number + self.i * cn.d
 		return ComplexNumber(d, i)
 
 	def __str__(self):

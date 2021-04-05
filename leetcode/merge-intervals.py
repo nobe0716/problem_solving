@@ -1,22 +1,20 @@
-# Definition for an interval.
-# class Interval(object):
-#     def __init__(self, s=0, e=0):
-#         self.start = s
-#         self.end = e
+from typing import List
 
-class Solution(object):
-	def merge(self, intervals):
-		l = sorted(intervals, key=lambda interval: interval.start)
-		cur = None
-		r = []
-		for interval in l:
-			if cur is None:
-				cur = Interval(interval.start, interval.end)
-			elif cur.end < interval.start:
-				r.append(cur)
-				cur = Interval(interval.start, interval.end)
-			else:
-				cur.end = max(cur.end, interval.end)
-		if cur is not None:
-			r.append(cur)
-		return r
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort()
+        res = []
+        pivot = [intervals[0][0], intervals[0][1]]
+        for lo, hi in intervals[1:]:
+            if lo <= pivot[1]:
+                pivot[1] = max(pivot[1], hi)
+            else:
+                res.append(pivot)
+                pivot = [lo, hi]
+        res.append(pivot)
+        return res
+
+
+s = Solution()
+assert s.merge(intervals=[[1, 3], [2, 6], [8, 10], [15, 18]]) == [[1, 6], [8, 10], [15, 18]]

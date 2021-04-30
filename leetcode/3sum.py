@@ -1,27 +1,30 @@
-class Solution(object):
-    def threeSum(self, nums):
-        if len(nums) < 3:
-            return []
+from typing import List
 
-        nums = list(sorted(nums))
-        l = len(nums)
-        r = set()
 
-        u = set()
-        d = {}
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
 
-        for i in range(l - 1, -1, -1):
-            if nums[i] not in d:
-                d[nums[i]] = i
-
-        for i in range(l - 1):
-            if i > 0 and nums[i] == nums[i - 1]:
+        res = set()
+        for i in range(0, len(nums)):
+            a = nums[i]
+            if i > 0 and a == nums[i - 1]:
                 continue
-            for j in range(i + 1, l):
-                if j > i + 1 and nums[j] == nums[j - 1]:
-                    continue
-                v = nums[i] + nums[j]
-                if -v in d and d[-v] > j:
-                    r.add((nums[i], nums[j], -v))
+            lo, hi = i + 1, len(nums) - 1
+            while lo < hi:
+                b, c = nums[lo], nums[hi]
+                if b + c == -a:
+                    res.add((a, b, c))
 
-        return list(map(list, r))
+                if b + c < -a:
+                    lo += 1
+                else:
+                    hi -= 1
+
+        res = list(map(list, res))
+        # print(res)
+        return res
+
+
+s = Solution()
+assert s.threeSum(nums=[-1, 0, 1, 2, -1, -4]) == [[-1, -1, 2], [-1, 0, 1]]

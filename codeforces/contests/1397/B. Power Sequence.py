@@ -7,6 +7,7 @@ _LIMIT = 10 ** 18
 def test(n, a, c):
     v = 1
     r = 0
+
     for i in range(n):
         r += abs(v - a[i])
         v *= c

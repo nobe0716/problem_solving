@@ -9,8 +9,12 @@ url_of_prob = input()
 url_of_prob = url_of_prob.strip()
 tokens = url_of_prob.split('/')
 
-contest_no = tokens[4]
-prob_no = tokens[6]
+if 'problemset' in url_of_prob:
+    contest_no = tokens[-2]
+    prob_no = tokens[-1]
+else:
+    contest_no = tokens[-3]
+    prob_no = tokens[-1]
 
 res = requests.get(url_of_prob)
 soup = BeautifulSoup(res.text, 'html.parser')

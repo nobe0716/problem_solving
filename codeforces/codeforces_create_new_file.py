@@ -27,3 +27,4 @@ file_path = 'contests/{}/{}.py'.format(contest_no, name_of_prob)
 print('# file path: {}'.format(file_path))
 with open(file_path, 'w') as f:
     f.write('# {}\n'.format(url_of_prob))
+    f.write('for _ in range(int(input())):\n')

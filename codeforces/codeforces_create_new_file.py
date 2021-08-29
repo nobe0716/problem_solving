@@ -25,6 +25,14 @@ Path("contests/{}".format(contest_no)).mkdir(parents=True, exist_ok=True)
 
 file_path = 'contests/{}/{}.py'.format(contest_no, name_of_prob)
 print('# file path: {}'.format(file_path))
+
+FILE_TEMPLATE = """# {}
+import sys
+
+input = sys.stdin.buffer.readline
+
+for _ in range(int(input())):
+"""
+
 with open(file_path, 'w') as f:
-    f.write('# {}\n'.format(url_of_prob))
-    f.write('for _ in range(int(input())):\n')
+    f.write(FILE_TEMPLATE.format(url_of_prob))

@@ -29,7 +29,9 @@ print('# file path: {}'.format(file_path))
 FILE_TEMPLATE = """# {}
 import sys
 
-input = sys.stdin.buffer.readline
+_DEBUG = True
+if not _DEBUG:
+    input = sys.stdin.buffer.readline
 
 for _ in range(int(input())):
 """

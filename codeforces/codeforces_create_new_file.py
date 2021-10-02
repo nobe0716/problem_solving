@@ -31,7 +31,7 @@ import sys
 
 _DEBUG = True
 if not _DEBUG:
-    input = sys.stdin.buffer.readline
+    input = sys.stdin.readline
 
 for _ in range(int(input())):
 """

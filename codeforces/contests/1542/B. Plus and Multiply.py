@@ -9,15 +9,17 @@ if not _DEBUG:
 def solve(n, a, b):
     k = 1
     nmb = n % b
-    s = set()
+    # s = set()
     while k <= n:
         # k %= b
         if k % b == nmb:
             return True
-        elif k % b in s:
-            return False
-        s.add(k % b)
+        # elif k % b in s:
+        #     return False
+        # s.add(k % b)
         k *= a
+        if a == 1:
+            break
     return False
 
 

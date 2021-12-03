@@ -17,7 +17,6 @@ def solve(n):
             primes.discard(j)
 
     ans = set()
-    groups = [range(1, n + 1)]
     # while groups:
     for p in primes:
         x = p

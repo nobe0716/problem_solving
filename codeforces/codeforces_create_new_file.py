@@ -6,10 +6,10 @@ from bs4 import BeautifulSoup
 print('# enter url of prob')
 url_of_prob = input()
 url_of_prob = url_of_prob.strip()
-tokens = url_of_prob.split('/')
 if url_of_prob.endswith('#'):
     url_of_prob = url_of_prob[:-1]
 # url_of_prob = 'https://codeforces.com/contest/276/problem/C'
+tokens = url_of_prob.split('/')
 
 if 'problemset' in url_of_prob:
     contest_no = tokens[-2]

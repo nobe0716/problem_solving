@@ -1,9 +1,11 @@
+import datetime
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
 print('# enter url of prob')
+print('# time: {}'.format(datetime.datetime.now()))
 url_of_prob = input()
 url_of_prob = url_of_prob.strip()
 if url_of_prob.endswith('#'):
@@ -29,6 +31,7 @@ file_path = 'contests/{}/{}.py'.format(contest_no, name_of_prob)
 print('# file path: {}'.format(file_path))
 
 FILE_TEMPLATE = """# {}
+# {}
 import sys
 
 _DEBUG = True
@@ -39,4 +42,4 @@ for _ in range(int(input())):
 """
 
 with open(file_path, 'w') as f:
-    f.write(FILE_TEMPLATE.format(url_of_prob))
+    f.write(FILE_TEMPLATE.format(datetime.datetime.now(), url_of_prob))

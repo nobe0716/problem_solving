@@ -37,6 +37,7 @@ import sys
 _DEBUG = True
 if not _DEBUG:
     input = sys.stdin.readline
+    #print = sys.stdout.write
 
 for _ in range(int(input())):
 """

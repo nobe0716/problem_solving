@@ -35,8 +35,8 @@ def proc(n, a):
     max_val = 0
     for i in range(n):
         if max_array[i] != 0:
-            if max_val + 1 < max_array[i]:
-                j = bisect.bisect_left(numbers, max_array[i]) - 1
+            # if max_val + 1 < max_array[i]:
+            j = bisect.bisect_left(numbers, max_array[i], lo=j) - 1
             max_val = max_array[i]
         else:
             while numbers[j] not in num_set:

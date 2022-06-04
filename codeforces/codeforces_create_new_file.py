@@ -20,7 +20,7 @@ else:
     contest_no = tokens[-3]
     prob_no = tokens[-1]
 
-res = requests.get(url_of_prob)
+res = requests.get(url_of_prob, allow_redirects=True)
 soup = BeautifulSoup(res.text, 'html.parser')
 
 name_of_prob = soup.select('.title')[0].text

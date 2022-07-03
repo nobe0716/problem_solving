@@ -4,11 +4,12 @@ from typing import List
 
 class Solution:
     def lastStoneWeight(self, stones: List[int]) -> int:
-        h = []
-        for e in stones:
-            heapq.heappush(h, -e)
+        stones = list(map(lambda x: -x, stones))
+        heapq.heapify(stones)
 
-        while len(h) >= 2:
-            a, b = -heapq.heappop(h), -heapq.heappop(h)
-            heapq.heappush(h, -(a - b))
-        return -h[0]
+        while len(stones) >= 2:
+            a, b = heapq.heappop(stones), heapq.heappop(stones)
+            r = -abs((-a) - (-b))
+            heapq.heappush(stones, r)
+        return stones[0]
+

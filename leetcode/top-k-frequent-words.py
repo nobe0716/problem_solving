@@ -31,7 +31,7 @@ class Trie:
 		candidates = []
 
 		if node.count > 0:
-			candidates.append((-node.count, node.v))
+			candidates.append((-node.count, node.value))
 
 		for key, child in node.next.items():
 			candidates = list(heapq.merge(candidates, self.find_top_k(k, child), key=itemgetter(0, 1)))

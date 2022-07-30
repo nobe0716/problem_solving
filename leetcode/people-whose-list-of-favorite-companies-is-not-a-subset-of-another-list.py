@@ -8,7 +8,7 @@ class Node:
         self.child = []
 
     def try_insert(self, node):
-        if self.v.intersection(node.v) != node.v:
+        if self.v.intersection(node.value) != node.value:
             return False
         if any(e.try_insert(node) for e in self.child):
             return True

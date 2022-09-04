@@ -28,6 +28,8 @@ set_factorials = set(factorials)
 
 @lru_cache(None)
 def proc(n, max_idx_t=len(power_of_two), max_idx_f=len(factorials)):
+    if n in set_factorials or n in set_power_of_tw:
+        return 1
     if n < 0 or (max_idx_t == 0 and max_idx_f == 0):
         return float('inf')
     if n == 0:
@@ -39,11 +41,11 @@ def proc(n, max_idx_t=len(power_of_two), max_idx_f=len(factorials)):
     idx_f = bisect.bisect(factorials, n, hi=max_idx_f) - 1
 
     res = float('inf')
-    if 0 <= idx_t < max_idx_t:
-        res = min(res, proc(n - power_of_two[idx_t], idx_t, max_idx_f) + 1)
-    if 0 <= idx_f < max_idx_f:
-        res = min(res, proc(n - factorials[idx_f], max_idx_t, idx_f) + 1)
-    return res
+
+    if power_of_two[idx_t] >= factorials[idx_f]:
+        return proc(n - power_of_two[idx_t], idx_t, max_idx_f) + 1
+    else:
+        return proc(n - factorials[idx_f], max_idx_t, idx_f) + 1
 
 
 # v = proc(240)

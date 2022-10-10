@@ -34,6 +34,7 @@ FILE_TEMPLATE = """# {}
 # {}
 import sys
 
+_DEBUG = False
 _DEBUG = True
 if not _DEBUG:
     input = sys.stdin.readline
